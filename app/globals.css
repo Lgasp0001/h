@@ -165,27 +165,26 @@
 /* Voiceflow Launcher Positioning - Reset to bottom */
 body .vfrc-launcher,
 body #voiceflow-chat,
-body .vf-widget-launcher,
+body [id^="voiceflow"],
 body .voiceflow-chat,
 body [class*="VoiceflowChat"],
 body [class*="vfrc-"] {
-  bottom: 24px !important;
-  top: auto !important;
+  top: 300px !important;
+  bottom: auto !important;
   right: 24px !important;
-  z-index: 10000 !important;
+  z-index: 99999 !important;
 }
 
 @media (max-width: 768px) {
 
   body .vfrc-launcher,
   body #voiceflow-chat,
-  body .vf-widget-launcher,
+  body [id^="voiceflow"],
   body .voiceflow-chat,
   body [class*="VoiceflowChat"],
   body [class*="vfrc-"] {
-    bottom: 112px !important;
-    /* Above MobileStickyCTA */
-    top: auto !important;
+    top: 250px !important;
+    bottom: auto !important;
     right: 20px !important;
   }
 }
