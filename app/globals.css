@@ -160,12 +160,6 @@
 
 /* Global Smoothness */
 
-/* Center-Right AI Chatbot positioning is handled in VoiceflowChat.tsx to prevent window clipping */
-#voiceflow-chat,
-[id^="voiceflow-chat"] {
-  z-index: 999999 !important;
-}
-
 ::selection {
   @apply bg-rose/30 text-berry;
 }
