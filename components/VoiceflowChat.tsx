@@ -45,18 +45,45 @@ export default function VoiceflowChat() {
                             }
                         });
 
-                        // Aggressively force position via JS
+                        // Powerful script to find and move Voiceflow elements even in Shadow DOM
                         const forcePosition = () => {
-                            const launchers = document.querySelectorAll('.vfrc-launcher, [class*="vfrc-launcher"], #voiceflow-chat');
-                            launchers.forEach((el: any) => {
-                                el.style.top = '50px';
-                                el.style.bottom = 'auto';
-                                el.style.right = '24px';
-                                el.style.position = 'fixed';
-                                el.style.zIndex = '100000';
+                            // 1. Target the main shadow host container
+                            const shadowHost = document.querySelector('#voiceflow-chat, [id^="voiceflow-chat"]');
+                            if (shadowHost && shadowHost.shadowRoot) {
+                                const shadowRoot = shadowHost.shadowRoot;
+                                const elements = shadowRoot.querySelectorAll('.vfrc-launcher, .vfrc-widget-launcher, [class*="launcher"]');
+                                elements.forEach((el: any) => {
+                                    el.style.setProperty('top', '20px', 'important');
+                                    el.style.setProperty('bottom', 'auto', 'important');
+                                    el.style.setProperty('right', '20px', 'important');
+                                    el.style.setProperty('position', 'fixed', 'important');
+                                });
+                            }
+
+                            // 2. Fallback for Light DOM elements
+                            const lightLaunchers = document.querySelectorAll('.vfrc-launcher, .vf-widget-launcher, #voiceflow-chat-container');
+                            lightLaunchers.forEach((el: any) => {
+                                el.style.setProperty('top', '20px', 'important');
+                                el.style.setProperty('bottom', 'auto', 'important');
+                                el.style.setProperty('right', '20px', 'important');
+                                el.style.setProperty('position', 'fixed', 'important');
+                            });
+
+                            // 3. Target any iframes (older versions)
+                            document.querySelectorAll('iframe').forEach(iframe => {
+                                if (iframe.src.includes('voiceflow') || iframe.id.includes('voiceflow')) {
+                                    iframe.style.setProperty('top', '20px', 'important');
+                                    iframe.style.setProperty('bottom', 'auto', 'important');
+                                    iframe.style.setProperty('right', '20px', 'important');
+                                    iframe.style.setProperty('position', 'fixed', 'important');
+                                    iframe.style.setProperty('z-index', '100000', 'important');
+                                }
                             });
                         };
-                        setInterval(forcePosition, 1000);
+
+                        // Run frequently to beat the widget's internal resets
+                        setInterval(forcePosition, 200);
+                        forcePosition(); // Run immediately
                     }
                 };
 

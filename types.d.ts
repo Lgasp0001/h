@@ -1,3 +1,7 @@
+declare module 'next' {
+    export type Metadata = any;
+}
+
 declare module 'next/image' {
     import { FC } from 'react';
     import { ImageProps } from 'next/dist/client/image';
