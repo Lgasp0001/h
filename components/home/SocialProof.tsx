@@ -9,7 +9,7 @@ import Image from 'next/image';
 const cases = [
     {
         name: "Sarah's IVF Journey",
-        image: "/images/transformations/sarah.png",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800",
         location: "South Congress, Austin",
         treatment: "IVF Treatment",
         duration: "6 Months",
@@ -19,7 +19,7 @@ const cases = [
     },
     {
         name: "David's Consultation",
-        image: "/images/transformations/david.png",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800",
         location: "Westlake Hills, Austin",
         treatment: "Fertility Check",
         duration: "1 Visit",
@@ -29,7 +29,7 @@ const cases = [
     },
     {
         name: "Emily's Preservation",
-        image: "/images/transformations/emily.png",
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800",
         location: "Downtown Austin",
         treatment: "Egg Freezing",
         duration: "14 Days",
@@ -70,11 +70,11 @@ export default function SocialProof() {
                     >
                         <div className="flex -space-x-4 mb-4">
                             {[
-                                { type: 'image', src: '/images/transformations/sarah.png', name: 'Sarah' },
+                                { type: 'image', src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100', name: 'Sarah' },
                                 { type: 'letter', char: 'M', color: 'bg-orange-500' },
-                                { type: 'image', src: '/images/transformations/david.png', name: 'David' },
+                                { type: 'image', src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100', name: 'David' },
                                 { type: 'letter', char: 'K', color: 'bg-berry' },
-                                { type: 'image', src: '/images/transformations/emily.png', name: 'Emily' },
+                                { type: 'image', src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100', name: 'Emily' },
                             ].map((avatar, i) => (
                                 <div
                                     key={i}

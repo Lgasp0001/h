@@ -159,6 +159,17 @@
 }
 
 /* Global Smoothness */
+/* Voiceflow Mobile Positioning */
+@media (max-width: 768px) {
+
+  .vfrc-launcher,
+  #voiceflow-chat,
+  .vf-widget-launcher {
+    bottom: 208px !important;
+    right: 24px !important;
+  }
+}
+
 ::selection {
   @apply bg-rose/30 text-berry;
 }
