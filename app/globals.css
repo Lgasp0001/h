@@ -160,15 +160,9 @@
 
 /* Global Smoothness */
 
-/* Safe Center-Right Positioning for AI Chatbot */
+/* Center-Right AI Chatbot positioning is handled in VoiceflowChat.tsx to prevent window clipping */
 #voiceflow-chat,
 [id^="voiceflow-chat"] {
-  position: fixed !important;
-  right: 20px !important;
-  bottom: 50% !important;
-  top: auto !important;
-  left: auto !important;
-  transform: translateY(50%) !important;
   z-index: 999999 !important;
 }
 
