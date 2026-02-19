@@ -45,6 +45,7 @@ export default function AssessmentQuiz() {
     const [isFinished, setIsFinished] = useState(false);
 
     const [email, setEmail] = useState('');
+    const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
     const isEmailValid = email.includes('@');
 
     const handleAnswer = (questionId: string) => {
@@ -126,44 +127,71 @@ export default function AssessmentQuiz() {
                         animate={{ opacity: 1, scale: 1 }}
                         className="bg-white rounded-[3rem] p-12 md:p-20 shadow-2xl text-center"
                     >
-                        <div className="w-20 h-20 bg-rose/10 rounded-full flex items-center justify-center mb-8 mx-auto">
-                            <Check className="w-10 h-10 text-rose font-bold" />
-                        </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-berry mb-6">Assessment Complete!</h3>
-                        <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-lg mx-auto">
-                            Based on your answers, you&apos;re a great candidate for our <span className="text-berry font-bold">Boutique Fertility Program.</span> Give us your email to see your recommended next steps.
-                        </p>
+                        {!isEmailSubmitted ? (
+                            <>
+                                <div className="w-20 h-20 bg-rose/10 rounded-full flex items-center justify-center mb-8 mx-auto">
+                                    <Check className="w-10 h-10 text-rose font-bold" />
+                                </div>
+                                <h3 className="text-3xl md:text-4xl font-bold text-berry mb-6">Assessment Complete!</h3>
+                                <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-lg mx-auto">
+                                    Based on your answers, you&apos;re a great candidate for our <span className="text-berry font-bold">Boutique Fertility Program.</span> Give us your email to see your recommended next steps.
+                                </p>
 
-                        <div className="max-w-sm mx-auto flex flex-col gap-4">
-                            <div className="text-left">
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Your email address"
-                                    className={`w-full px-6 py-4 rounded-xl border focus:outline-none transition-colors text-lg ${!isEmailValid && email !== ''
-                                        ? 'border-red-500 ring-red-100'
-                                        : 'border-gray-200 focus:ring-2 focus:ring-rose/30'
-                                        }`}
-                                />
-                                {!isEmailValid && email !== '' && (
-                                    <p className="text-red-500 text-xs mt-1 ml-1">Please include an &apos;@&apos; in the email address.</p>
-                                )}
+                                <div className="max-w-sm mx-auto flex flex-col gap-4">
+                                    <div className="text-left">
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Your email address"
+                                            className={`w-full px-6 py-4 rounded-xl border focus:outline-none transition-colors text-lg ${!isEmailValid && email !== ''
+                                                ? 'border-red-500 ring-red-100'
+                                                : 'border-gray-200 focus:ring-2 focus:ring-rose/30'
+                                                }`}
+                                        />
+                                        {!isEmailValid && email !== '' && (
+                                            <p className="text-red-500 text-xs mt-1 ml-1">Please include an &apos;@&apos; in the email address.</p>
+                                        )}
+                                    </div>
+                                    <Button
+                                        size="lg"
+                                        onClick={() => isEmailValid && setIsEmailSubmitted(true)}
+                                        className={`text-lg py-7 rounded-xl transition-all duration-300 ${isEmailValid
+                                            ? 'bg-berry hover:bg-berry-700 text-white shadow-xl shadow-berry/20 scale-[1.02]'
+                                            : 'bg-berry/40 cursor-not-allowed text-white/80'
+                                            }`}
+                                    >
+                                        See My Results
+                                    </Button>
+                                </div>
+                                <p className="mt-8 text-sm text-gray-400 flex items-center justify-center gap-2">
+                                    <ShieldCheck className="w-4 h-4" />
+                                    Your data is secured and private.
+                                </p>
+                            </>
+                        ) : (
+                            <div className="py-10">
+                                <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-8 mx-auto">
+                                    <Check className="w-10 h-10 text-green-500 font-bold" />
+                                </div>
+                                <h3 className="text-3xl font-bold text-berry mb-4">Results Sent!</h3>
+                                <p className="text-lg text-gray-600 mb-8 max-w-md mx-auto">
+                                    Thank you! We&apos;ve sent your personalized fertility roadmap to <span className="font-bold text-berry">{email}</span>.
+                                </p>
+                                <Button
+                                    onClick={() => {
+                                        setIsFinished(false);
+                                        setIsEmailSubmitted(false);
+                                        setCurrentStep(0);
+                                        setEmail('');
+                                    }}
+                                    variant="outline"
+                                    className="border-berry text-berry hover:bg-berry hover:text-white"
+                                >
+                                    Take Quiz Again
+                                </Button>
                             </div>
-                            <Button
-                                size="lg"
-                                className={`text-lg py-7 rounded-xl transition-all duration-300 ${isEmailValid
-                                    ? 'bg-berry hover:bg-berry-700 text-white shadow-xl shadow-berry/20 scale-[1.02]'
-                                    : 'bg-berry/40 cursor-not-allowed text-white/80'
-                                    }`}
-                            >
-                                See My Results
-                            </Button>
-                        </div>
-                        <p className="mt-8 text-sm text-gray-400 flex items-center justify-center gap-2">
-                            <ShieldCheck className="w-4 h-4" />
-                            Your data is secured and private.
-                        </p>
+                        )}
                     </motion.div>
                 )}
             </div>

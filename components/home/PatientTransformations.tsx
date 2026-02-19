@@ -53,8 +53,8 @@ export default function PatientTransformations() {
                         className="premium-glass p-4 rounded-[2.5rem] bg-gray-50/50"
                     >
                         <ComparisonSlider
-                            beforeImage="/images/transformations/studio_view.png"
-                            afterImage="/images/transformations/care_detail.png"
+                            beforeImage="/images/transformations/sarah_before.png"
+                            afterImage="/images/transformations/sarah_after.png"
                         />
                     </motion.div>
 

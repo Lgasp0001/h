@@ -95,9 +95,15 @@ export default function SocialProof() {
                         </div>
                         <div className="text-berry font-bold flex items-center gap-2">
                             <div className="flex">
-                                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 text-rose fill-rose" />)}
+                                {[...Array(4)].map((_, i) => <Star key={i} className="w-4 h-4 text-rose fill-rose" />)}
+                                <div className="relative">
+                                    <Star className="w-4 h-4 text-rose" />
+                                    <div className="absolute inset-0 overflow-hidden w-1/2">
+                                        <Star className="w-4 h-4 text-rose fill-rose" />
+                                    </div>
+                                </div>
                             </div>
-                            4.9/5 from 437 reviews in total
+                            4.4/5 from 437 reviews in total
                         </div>
                     </motion.div>
                 </div>
