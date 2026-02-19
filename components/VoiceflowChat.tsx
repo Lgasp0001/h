@@ -45,45 +45,54 @@ export default function VoiceflowChat() {
                             }
                         });
 
-                        // Powerful script to find and move Voiceflow elements even in Shadow DOM
-                        const forcePosition = () => {
-                            // 1. Target the main shadow host container
-                            const shadowHost = document.querySelector('#voiceflow-chat, [id^="voiceflow-chat"]');
-                            if (shadowHost && shadowHost.shadowRoot) {
-                                const shadowRoot = shadowHost.shadowRoot;
-                                const elements = shadowRoot.querySelectorAll('.vfrc-launcher, .vfrc-widget-launcher, [class*="launcher"]');
+                        // Even more powerful script to force position
+                        const forceTopPosition = () => {
+                            // Target both the shadow host and any direct child elements
+                            const selectors = [
+                                '#voiceflow-chat',
+                                '[id^="voiceflow-chat"]',
+                                '.vfrc-launcher',
+                                '.vfrc-widget-launcher',
+                                '[class*="vfrc-"]'
+                            ];
+
+                            selectors.forEach(selector => {
+                                const elements = document.querySelectorAll(selector);
                                 elements.forEach((el: any) => {
                                     el.style.setProperty('top', '20px', 'important');
                                     el.style.setProperty('bottom', 'auto', 'important');
                                     el.style.setProperty('right', '20px', 'important');
                                     el.style.setProperty('position', 'fixed', 'important');
+                                    el.style.setProperty('transform', 'none', 'important');
+
+                                    // If it's the host, look inside its shadow root
+                                    if (el.shadowRoot) {
+                                        const children = el.shadowRoot.querySelectorAll('.vfrc-launcher, [class*="launcher"]');
+                                        children.forEach((child: any) => {
+                                            child.style.setProperty('top', '20px', 'important');
+                                            child.style.setProperty('bottom', 'auto', 'important');
+                                            child.style.setProperty('right', '20px', 'important');
+                                            child.style.setProperty('position', 'fixed', 'important');
+                                            child.style.setProperty('transform', 'none', 'important');
+                                        });
+                                    }
                                 });
-                            }
-
-                            // 2. Fallback for Light DOM elements
-                            const lightLaunchers = document.querySelectorAll('.vfrc-launcher, .vf-widget-launcher, #voiceflow-chat-container');
-                            lightLaunchers.forEach((el: any) => {
-                                el.style.setProperty('top', '20px', 'important');
-                                el.style.setProperty('bottom', 'auto', 'important');
-                                el.style.setProperty('right', '20px', 'important');
-                                el.style.setProperty('position', 'fixed', 'important');
-                            });
-
-                            // 3. Target any iframes (older versions)
-                            document.querySelectorAll('iframe').forEach(iframe => {
-                                if (iframe.src.includes('voiceflow') || iframe.id.includes('voiceflow')) {
-                                    iframe.style.setProperty('top', '20px', 'important');
-                                    iframe.style.setProperty('bottom', 'auto', 'important');
-                                    iframe.style.setProperty('right', '20px', 'important');
-                                    iframe.style.setProperty('position', 'fixed', 'important');
-                                    iframe.style.setProperty('z-index', '100000', 'important');
-                                }
                             });
                         };
 
-                        // Run frequently to beat the widget's internal resets
-                        setInterval(forcePosition, 200);
-                        forcePosition(); // Run immediately
+                        // Use MutationObserver for instant reaction
+                        const observer = new MutationObserver(() => {
+                            forceTopPosition();
+                        });
+
+                        observer.observe(document.body, {
+                            childList: true,
+                            subtree: true
+                        });
+
+                        // Interval as a backup for dynamic internal widget updates
+                        setInterval(forceTopPosition, 100);
+                        forceTopPosition();
                     }
                 };
 
