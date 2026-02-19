@@ -163,3 +163,34 @@
 ::selection {
   @apply bg-rose/30 text-berry;
 }
+
+/* 
+  Voiceflow Web-Chat Launcher Position Override
+  Moves the launcher HIGHER to ~45vh from top, right-aligned.
+  Uses a robust selector and fixed positioning.
+*/
+#voiceflow-chat,
+[id^="voiceflow-chat"] {
+  position: fixed !important;
+  top: calc(45vh - 0px) !important;
+  /* Force re-evaluation with calc() */
+  right: calc(32px + env(safe-area-inset-right, 0px)) !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: 9999999 !important;
+
+  /* 
+     Trapping Fixed Elements:
+     Creates a new stacking context so that the absolute/fixed 
+     launcher inside the Shadow DOM is relative to this root.
+  */
+  transform: translateY(0) !important;
+
+  /* 
+     Collision & Pointer Safety:
+     Ensure the root doesn't block the page clicks, 
+     while allowing the launcher to overflow and remain clickable.
+  */
+  width: 0 !important;
+  height: 0 !important;
+  overflow: visible !important;
