@@ -168,10 +168,9 @@
 .voiceflow-chat,
 [class*="VoiceflowChat"],
 [class*="vfrc-"] {
-  bottom: 180px !important;
-  /* Bumped significantly to clear Back to Top square */
+  top: 30% !important;
+  bottom: auto !important;
   right: 32px !important;
-  /* Aligned with Back-to-Top (right-8) */
   z-index: 10000 !important;
 }
 
@@ -183,10 +182,9 @@
   .voiceflow-chat,
   [class*="VoiceflowChat"],
   [class*="vfrc-"] {
-    bottom: 280px !important;
-    /* Bumped significantly for mobile spacing */
+    top: 25% !important;
+    bottom: auto !important;
     right: 24px !important;
-    /* Aligned with Mobile Back-to-Top (right-6) */
   }
 }
 
