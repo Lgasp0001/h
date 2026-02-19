@@ -45,48 +45,49 @@ export default function VoiceflowChat() {
                             }
                         });
 
-                        // Surgical script to move launcher to center-right without breaking the chat window
+                        // Most stable script to move launcher to center-right without distortion
                         const forceCenterRight = () => {
                             const host = document.querySelector('#voiceflow-chat, [id^="voiceflow-chat"]');
                             if (host) {
                                 const el = host as HTMLElement;
-                                // 1. Set host to cover full area but be "invisible" to clicks (except its children)
+                                // Reset the host so it doesn't squash or stretch children
                                 el.style.setProperty('position', 'fixed', 'important');
-                                el.style.setProperty('right', '0px', 'important');
-                                el.style.setProperty('bottom', '0px', 'important');
-                                el.style.setProperty('top', '0px', 'important');
-                                el.style.setProperty('left', '0px', 'important');
-                                el.style.setProperty('width', '100vw', 'important');
-                                el.style.setProperty('height', '100vh', 'important');
-                                el.style.setProperty('pointer-events', 'none', 'important');
+                                el.style.setProperty('right', '32px', 'important');
+                                el.style.setProperty('bottom', '50%', 'important');
+                                el.style.setProperty('top', 'auto', 'important');
+                                el.style.setProperty('left', 'auto', 'important');
+                                el.style.setProperty('transform', 'translateY(50%)', 'important');
+                                el.style.setProperty('width', '1px', 'important'); // Tiny width
+                                el.style.setProperty('height', '1px', 'important'); // Tiny height
+                                el.style.setProperty('overflow', 'visible', 'important');
+                                el.style.setProperty('display', 'flex', 'important');
+                                el.style.setProperty('align-items', 'center', 'important');
+                                el.style.setProperty('justify-content', 'center', 'important');
                                 el.style.setProperty('z-index', '999999', 'important');
 
                                 if (el.shadowRoot) {
-                                    // 2. Position the launcher exactly in the vertical center-right
+                                    // Target the launcher specifically
                                     const launcher = el.shadowRoot.querySelector('.vfrc-launcher');
                                     if (launcher) {
                                         const l = launcher as HTMLElement;
-                                        l.style.setProperty('position', 'fixed', 'important');
-                                        l.style.setProperty('right', '20px', 'important');
-                                        l.style.setProperty('bottom', '50%', 'important');
-                                        l.style.setProperty('transform', 'translateY(50%)', 'important');
-                                        l.style.setProperty('pointer-events', 'all', 'important');
+                                        // Ensure it doesn't stretch to fill the host
+                                        l.style.setProperty('width', 'auto', 'important');
+                                        l.style.setProperty('height', 'auto', 'important');
+                                        l.style.setProperty('position', 'absolute', 'important');
+                                        l.style.setProperty('right', '0', 'important');
+                                        l.style.setProperty('bottom', '0', 'important');
+                                        l.style.setProperty('transform', 'none', 'important');
                                     }
 
-                                    // 3. Position the widget (chat window) so it's visible when open
+                                    // Ensure the widget window is visible when it opens
                                     const widget = el.shadowRoot.querySelector('.vfrc-widget');
                                     if (widget) {
                                         const w = widget as HTMLElement;
-                                        // If the widget is open, we want it to stay near the launcher or at bottom-right
-                                        // Voiceflow adds/removes styles here, so we just ensure it's clickable and bounded
-                                        w.style.setProperty('pointer-events', 'all', 'important');
-
-                                        // If widget is open, shift it so it doesn't overlap the launcher awkwardly
-                                        // Most Voiceflow widgets anchor at the bottom of the container
+                                        // Shift the open window so it stays on screen
                                         if (!widget.classList.contains('vfrc-widget--hidden')) {
-                                            w.style.setProperty('right', '20px', 'important');
-                                            w.style.setProperty('bottom', '80px', 'important');
-                                            w.style.setProperty('top', 'auto', 'important');
+                                            w.style.setProperty('bottom', '20px', 'important');
+                                            w.style.setProperty('right', '0', 'important');
+                                            w.style.setProperty('position', 'absolute', 'important');
                                         }
                                     }
                                 }
