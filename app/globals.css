@@ -162,14 +162,14 @@
 /* Voiceflow Mobile Positioning */
 /* Voiceflow Launcher Positioning - Stacked above Back-to-Top */
 /* Using broad selectors to catch different widget parts/tabs like "Test your agent" */
-/* AI Chatbot - Center Left Positioning */
+/* AI Chatbot - Center Right Positioning */
 html body #voiceflow-chat,
 html body [id^="voiceflow"],
 html body [class*="vfrc-"],
 html body [class*="Voiceflow"] {
   bottom: 50% !important;
-  left: 32px !important;
-  right: auto !important;
+  right: 32px !important;
+  left: auto !important;
   top: auto !important;
   transform: translateY(50%) !important;
   z-index: 999999 !important;
@@ -184,7 +184,7 @@ html body [class*="Voiceflow"] {
   html body [id^="voiceflow"],
   html body [class*="vfrc-"],
   html body [class*="Voiceflow"] {
-    left: 16px !important;
+    right: 16px !important;
     bottom: 50% !important;
   }
 }
