@@ -44,6 +44,19 @@ export default function VoiceflowChat() {
                                 url: "https://runtime-api.voiceflow.com"
                             }
                         });
+
+                        // Aggressively force position via JS
+                        const forcePosition = () => {
+                            const launchers = document.querySelectorAll('.vfrc-launcher, [class*="vfrc-launcher"], #voiceflow-chat');
+                            launchers.forEach((el: any) => {
+                                el.style.top = '50px';
+                                el.style.bottom = 'auto';
+                                el.style.right = '24px';
+                                el.style.position = 'fixed';
+                                el.style.zIndex = '100000';
+                            });
+                        };
+                        setInterval(forcePosition, 1000);
                     }
                 };
 

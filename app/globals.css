@@ -162,30 +162,31 @@
 /* Voiceflow Mobile Positioning */
 /* Voiceflow Launcher Positioning - Stacked above Back-to-Top */
 /* Using broad selectors to catch different widget parts/tabs like "Test your agent" */
-/* Voiceflow Launcher Positioning - Reset to bottom */
-body .vfrc-launcher,
-body #voiceflow-chat,
-body [id^="voiceflow"],
-body .voiceflow-chat,
-body [class*="VoiceflowChat"],
-body [class*="vfrc-"] {
-  top: 300px !important;
+/* Extreme Top Positioning for Voiceflow */
+html body #voiceflow-chat,
+html body .vfrc-launcher,
+html body .vfrc-chat,
+html body [id^="voiceflow"],
+html body [class*="vfrc-"],
+html body [class*="Voiceflow"] {
+  top: 50px !important;
   bottom: auto !important;
   right: 24px !important;
-  z-index: 99999 !important;
+  z-index: 100000 !important;
+  position: fixed !important;
 }
 
 @media (max-width: 768px) {
 
-  body .vfrc-launcher,
-  body #voiceflow-chat,
-  body [id^="voiceflow"],
-  body .voiceflow-chat,
-  body [class*="VoiceflowChat"],
-  body [class*="vfrc-"] {
-    top: 250px !important;
+  html body #voiceflow-chat,
+  html body .vfrc-launcher,
+  html body .vfrc-chat,
+  html body [id^="voiceflow"],
+  html body [class*="vfrc-"],
+  html body [class*="Voiceflow"] {
+    top: 40px !important;
     bottom: auto !important;
-    right: 20px !important;
+    right: 16px !important;
   }
 }
 
