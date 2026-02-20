@@ -163,19 +163,3 @@
 ::selection {
   @apply bg-rose/30 text-berry;
 }
-
-/* 
-  Voiceflow Web-Chat Launcher Position Override
-  Using a very aggressive selector to ensure it moves to 45vh.
-*/
-#voiceflow-chat,
-[id^="voiceflow-chat"],
-[id*="voiceflow-chat"],
-[id*="vf-chat"] {
-  position: fixed !important;
-  top: 45vh !important;
-  right: 32px !important;
-  bottom: auto !important;
-  left: auto !important;
-  z-index: 2000000000 !important;
-}
