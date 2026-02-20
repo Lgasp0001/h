@@ -14,6 +14,7 @@ declare global {
                 }) => void;
             };
         };
+        hasLoggedHost?: boolean;
     }
 }
 
@@ -35,6 +36,7 @@ export default function VoiceflowChat() {
                 script.async = true;
 
                 script.onload = () => {
+                    console.log('Voiceflow script loaded');
                     if (window.voiceflow && window.voiceflow.chat) {
                         window.voiceflow.chat.load({
                             verify: { projectID: '699261a9d6a662d6c77cb9cc' },
@@ -46,80 +48,81 @@ export default function VoiceflowChat() {
                         });
 
                         const fixChatbot = () => {
-                            const host = document.querySelector('#voiceflow-chat, [id^="voiceflow-chat"]') as HTMLElement;
-                            if (host && host.shadowRoot) {
-                                // 1. Root Positioning & Base Size
+                            const host = document.querySelector('[id*="voiceflow"], [id*="vf-chat"], .vf-widget-container, #voiceflow-chat') as HTMLElement;
+
+                            if (host) {
+                                if (!window.hasLoggedHost) {
+                                    console.log('Voiceflow host found:', host.id);
+                                    window.hasLoggedHost = true;
+                                }
+
+                                // 1. Support for global positioning
                                 host.style.setProperty('position', 'fixed', 'important');
                                 host.style.setProperty('top', '45vh', 'important');
                                 host.style.setProperty('right', '32px', 'important');
                                 host.style.setProperty('bottom', 'auto', 'important');
                                 host.style.setProperty('left', 'auto', 'important');
-                                host.style.setProperty('z-index', '9999999', 'important');
+                                host.style.setProperty('width', '60px', 'important');
+                                host.style.setProperty('height', '60px', 'important');
                                 host.style.setProperty('transform', 'translateY(-50%)', 'important');
                                 host.style.setProperty('overflow', 'visible', 'important');
-                                host.style.setProperty('display', 'block', 'important');
-                                host.style.setProperty('pointer-events', 'none', 'important'); // Pass-through for the host area
+                                host.style.setProperty('z-index', '999999999', 'important');
+                                host.style.setProperty('pointer-events', 'none', 'important');
 
-                                const widget = host.shadowRoot.querySelector('.vfrc-widget') as HTMLElement;
-                                const launcher = host.shadowRoot.querySelector('.vfrc-launcher') as HTMLElement;
+                                // 2. Shadow DOM injection
+                                if (host.shadowRoot) {
+                                    let style = host.shadowRoot.querySelector('#vf-surgical-final') as HTMLStyleElement;
+                                    if (!style) {
+                                        style = document.createElement('style');
+                                        style.id = 'vf-surgical-final';
+                                        host.shadowRoot.appendChild(style);
+                                    }
 
-                                // Expand host if widget is open so it's not clipped
-                                if (widget && !widget.classList.contains('vfrc-widget--hidden')) {
-                                    host.style.setProperty('width', '400px', 'important');
-                                    host.style.setProperty('height', '600px', 'important');
-                                } else {
-                                    host.style.setProperty('width', '60px', 'important');
-                                    host.style.setProperty('height', '60px', 'important');
-                                }
-
-                                // 2. Inject Style Tag into Shadow DOM
-                                if (!host.shadowRoot.querySelector('#vf-override')) {
-                                    const style = document.createElement('style');
-                                    style.id = 'vf-override';
-                                    style.textContent = `
+                                    const cssContent = `
                                         .vfrc-launcher {
                                             position: absolute !important;
-                                            bottom: 0 !important;
+                                            top: 0 !important;
                                             right: 0 !important;
-                                            top: auto !important;
+                                            bottom: auto !important;
                                             left: auto !important;
                                             width: 60px !important;
                                             height: 60px !important;
+                                            border-radius: 50% !important;
                                             margin: 0 !important;
                                             padding: 0 !important;
-                                            border-radius: 50% !important;
-                                            pointer-events: auto !important;
-                                            transform: none !important;
                                             display: flex !important;
                                             align-items: center !important;
                                             justify-content: center !important;
-                                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-                                            background-color: #3b82f6 !important; /* Standard Voiceflow blue if missing */
-                                        }
-                                        .vfrc-widget {
-                                            position: absolute !important;
-                                            bottom: 0 !important; /* Bottom-aligned in the host */
-                                            right: 0 !important;
                                             pointer-events: auto !important;
                                             transform: none !important;
+                                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+                                        }
+                                        /* Hide everything but the icons to ensure circular shape */
+                                        .vfrc-launcher > *:not(svg):not(img):not(.vfrc-icon) {
+                                            display: none !important;
+                                        }
+                                        .vfrc-launcher svg, 
+                                        .vfrc-launcher img,
+                                        .vfrc-launcher .vfrc-icon,
+                                        .vfrc-launcher .vfrc-icon * {
+                                            display: block !important;
+                                        }
+                                        .vfrc-launcher svg, .vfrc-launcher img {
+                                            width: 28px !important;
+                                            height: 28px !important;
+                                        }
+                                        .vfrc-widget {
+                                            position: fixed !important;
+                                            bottom: 32px !important;
+                                            right: 32px !important;
                                             top: auto !important;
                                             left: auto !important;
-                                            width: 400px !important;
-                                            height: 600px !important;
-                                            max-width: 90vw !important;
-                                            max-height: 80vh !important;
-                                        }
-                                        .vfrc-launcher:hover {
-                                            transform: scale(1.05) !important;
-                                        }
-                                        /* Shape Protection for images/svgs inside launcher */
-                                        .vfrc-launcher img, .vfrc-launcher svg {
-                                            width: 32px !important;
-                                            height: 32px !important;
-                                            object-fit: contain !important;
+                                            pointer-events: auto !important;
                                         }
                                     `;
-                                    host.shadowRoot.appendChild(style);
+                                    if (style.textContent !== cssContent) {
+                                        style.textContent = cssContent;
+                                    }
                                 }
                             }
                         };
