@@ -56,20 +56,17 @@ export default function VoiceflowChat() {
                                     window.hasLoggedHost = true;
                                 }
 
-                                // 1. Support for global positioning
+                                // 1. Ensure host doesn't block interactions or clip content
                                 host.style.setProperty('position', 'fixed', 'important');
-                                host.style.setProperty('top', '45vh', 'important');
-                                host.style.setProperty('right', '32px', 'important');
-                                host.style.setProperty('bottom', 'auto', 'important');
-                                host.style.setProperty('left', 'auto', 'important');
-                                host.style.setProperty('width', '60px', 'important');
-                                host.style.setProperty('height', '60px', 'important');
-                                host.style.setProperty('transform', 'translateY(-50%)', 'important');
+                                host.style.setProperty('top', '0', 'important');
+                                host.style.setProperty('right', '0', 'important');
+                                host.style.setProperty('width', '100%', 'important');
+                                host.style.setProperty('height', '0', 'important');
                                 host.style.setProperty('overflow', 'visible', 'important');
-                                host.style.setProperty('z-index', '999999999', 'important');
                                 host.style.setProperty('pointer-events', 'none', 'important');
+                                host.style.setProperty('z-index', '2000000000', 'important');
 
-                                // 2. Shadow DOM injection
+                                // 2. Shadow DOM styles - position launcher FIXED at 45vh
                                 if (host.shadowRoot) {
                                     let style = host.shadowRoot.querySelector('#vf-surgical-final') as HTMLStyleElement;
                                     if (!style) {
@@ -79,38 +76,25 @@ export default function VoiceflowChat() {
                                     }
 
                                     const cssContent = `
+                                        /* Move the launcher directly with fixed positioning */
                                         .vfrc-launcher {
-                                            position: absolute !important;
-                                            top: 0 !important;
-                                            right: 0 !important;
+                                            position: fixed !important;
+                                            top: 45vh !important;
+                                            right: 32px !important;
                                             bottom: auto !important;
                                             left: auto !important;
-                                            width: 60px !important;
-                                            height: 60px !important;
-                                            border-radius: 50% !important;
-                                            margin: 0 !important;
-                                            padding: 0 !important;
-                                            display: flex !important;
-                                            align-items: center !important;
-                                            justify-content: center !important;
+                                            transform: translateY(-50%) !important;
                                             pointer-events: auto !important;
-                                            transform: none !important;
-                                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+                                            /* NO width/height/border-radius overrides to keep original shape */
                                         }
-                                        /* Hide everything but the icons to ensure circular shape */
-                                        .vfrc-launcher > *:not(svg):not(img):not(.vfrc-icon) {
-                                            display: none !important;
-                                        }
-                                        .vfrc-launcher svg, 
-                                        .vfrc-launcher img,
-                                        .vfrc-launcher .vfrc-icon,
-                                        .vfrc-launcher .vfrc-icon * {
-                                            display: block !important;
+                                        /* Ensure ALL launcher children are visible (restores label/pill shape) */
+                                        .vfrc-launcher * {
+                                            display: initial !important;
                                         }
                                         .vfrc-launcher svg, .vfrc-launcher img {
-                                            width: 28px !important;
-                                            height: 28px !important;
+                                            display: inline-block !important; /* Standard display for icons */
                                         }
+                                        /* Keep the actual chat widget (the window) at the bottom right */
                                         .vfrc-widget {
                                             position: fixed !important;
                                             bottom: 32px !important;
