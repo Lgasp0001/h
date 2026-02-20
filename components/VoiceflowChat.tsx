@@ -50,7 +50,7 @@ export default function VoiceflowChat() {
                                   bottom: 200px !important;
                                 }
                                 .vfrc-chat__container {
-                                  bottom: 276px !important;
+                                  bottom: 20px !important;
                                 }
                             `;
 
