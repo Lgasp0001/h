@@ -46,51 +46,60 @@ export default function VoiceflowChat() {
                         });
 
                         const fixChatbot = () => {
-                            const host = document.querySelector('#voiceflow-chat, [id^="voiceflow-chat"]');
+                            const host = document.querySelector('#voiceflow-chat, [id^="voiceflow-chat"]') as HTMLElement;
                             if (host && host.shadowRoot) {
-                                const el = host as HTMLElement;
+                                // 1. Root Positioning (Ghost point at 45vh)
+                                host.style.setProperty('position', 'fixed', 'important');
+                                host.style.setProperty('top', '45vh', 'important');
+                                host.style.setProperty('right', '32px', 'important');
+                                host.style.setProperty('bottom', 'auto', 'important');
+                                host.style.setProperty('left', 'auto', 'important');
+                                host.style.setProperty('width', '10px', 'important');
+                                host.style.setProperty('height', '10px', 'important');
+                                host.style.setProperty('overflow', 'visible', 'important');
+                                host.style.setProperty('z-index', '9999999', 'important');
+                                host.style.setProperty('pointer-events', 'none', 'important');
 
-                                // Reset host to not interfere with Shadow DOM layout
-                                el.style.setProperty('position', 'fixed', 'important');
-                                el.style.setProperty('top', '45vh', 'important');
-                                el.style.setProperty('right', '32px', 'important');
-                                el.style.setProperty('bottom', 'auto', 'important');
-                                el.style.setProperty('width', '80px', 'important');
-                                el.style.setProperty('height', '80px', 'important');
-                                el.style.setProperty('z-index', '9999999', 'important');
-                                el.style.setProperty('overflow', 'visible', 'important');
-
-                                const launcher = host.shadowRoot.querySelector('.vfrc-launcher') as HTMLElement;
-                                const widget = host.shadowRoot.querySelector('.vfrc-widget') as HTMLElement;
-
-                                if (launcher) {
-                                    // Ensure launcher is not squashed and uses absolute positioning relative to host
-                                    launcher.style.setProperty('position', 'absolute', 'important');
-                                    launcher.style.setProperty('top', '0', 'important');
-                                    launcher.style.setProperty('right', '0', 'important');
-                                    launcher.style.setProperty('margin', '0', 'important');
-                                    launcher.style.setProperty('transform', 'none', 'important');
-                                }
-
-                                if (widget) {
-                                    // Position the chat window correctly when it opens
-                                    if (!widget.classList.contains('vfrc-widget--hidden')) {
-                                        el.style.setProperty('width', '400px', 'important');
-                                        el.style.setProperty('height', '600px', 'important');
-                                        widget.style.setProperty('position', 'absolute', 'important');
-                                        widget.style.setProperty('bottom', '0', 'important');
-                                        widget.style.setProperty('right', '0', 'important');
-                                    } else {
-                                        el.style.setProperty('width', '80px', 'important');
-                                        el.style.setProperty('height', '80px', 'important');
-                                    }
+                                // 2. Inject Style Tag into Shadow DOM (Cleaner & more stable)
+                                if (!host.shadowRoot.querySelector('#vf-override')) {
+                                    const style = document.createElement('style');
+                                    style.id = 'vf-override';
+                                    style.textContent = `
+                                        .vfrc-launcher {
+                                            position: absolute !important;
+                                            top: 0 !important;
+                                            right: 0 !important;
+                                            width: 60px !important;
+                                            height: 60px !important;
+                                            margin: 0 !important;
+                                            border-radius: 50% !important; /* Force Circle */
+                                            pointer-events: auto !important;
+                                            transform: translateY(-50%) !important;
+                                            bottom: auto !important;
+                                            left: auto !important;
+                                            display: flex !important;
+                                            align-items: center !important;
+                                            justify-content: center !important;
+                                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+                                        }
+                                        .vfrc-widget {
+                                            position: absolute !important;
+                                            bottom: 40px !important; /* Above launcher relative to host point */
+                                            right: 0 !important;
+                                            pointer-events: auto !important;
+                                            transform: none !important;
+                                            top: auto !important;
+                                            left: auto !important;
+                                        }
+                                    `;
+                                    host.shadowRoot.appendChild(style);
                                 }
                             }
                         };
 
                         const observer = new MutationObserver(fixChatbot);
                         observer.observe(document.body, { childList: true, subtree: true });
-                        setInterval(fixChatbot, 300);
+                        setInterval(fixChatbot, 500);
                         fixChatbot();
                     }
                 };
